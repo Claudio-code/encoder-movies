@@ -11,6 +11,7 @@ import (
 type VideoRepository interface {
 	Insert(video *domain.Video) (*domain.Video, error)
 	Find(id string) (*domain.Video, error)
+	Update(video *domain.Video) (*domain.Video, error)
 }
 
 type VideoRepositoryDb struct {
@@ -43,4 +44,13 @@ func (repo *VideoRepositoryDb) Find(id string) (*domain.Video, error) {
 	}
 
 	return &video, nil
+}
+
+func (repo *VideoRepositoryDb) Update(video *domain.Video) (*domain.Video, error) {
+	err := repo.Db.Save(&video).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return video, nil
 }
